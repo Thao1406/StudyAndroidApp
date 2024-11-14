@@ -1,0 +1,103 @@
+Bag
+Bear
+Book
+Bottle
+Brown bear
+Bull
+Butterfly
+Camel
+Canary
+Caterpillar
+Cattle
+Ceiling light
+Centipede
+Crab
+Crocodile
+Chair
+Cheetah
+Chicken
+Deer
+Duck
+Eagle
+Electric fan
+Elephant
+Fish
+Fox
+Fridge
+Frog
+Glass
+Goat
+Goldfish
+Goose
+Giraffe
+Hamster
+Harbor seal
+Hedgehog
+Hippopotamus
+Horse
+Jaguar
+Jellyfish
+Kangaroo
+Koala
+Ladybug
+Laptop
+Leopard
+Lion
+Lizard
+Lynx
+Magpie
+Microwave
+Monkey
+Moths and butterflies
+Mouse
+Mousepad
+Mule
+Ostrich
+Otter
+Owl
+Panda
+Parrot
+Pen
+Penguin
+Pig
+Polar bear
+Rabbit
+Raccoon
+Raven
+Red panda
+Rhinoceros
+Ruler
+Scorpion
+Sea lion
+Sea turtle
+Seahorse
+Shark
+Sheep
+Shirt
+Shrimp
+Smartphone
+Snail
+Snake
+Sparrow
+Spider
+Squid
+Squirrel
+Starfish
+Swan
+Table
+Tick
+Tiger
+Tortoise
+Turkey
+Turtle
+TV
+Trouser
+Vase
+Whale
+Woodpecker
+Worm
+Zebra
+Candy
+Cat
+Dog
+Pig
