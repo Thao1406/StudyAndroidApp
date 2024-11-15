@@ -6,6 +6,7 @@ import com.example.myapplication.R
 import android.content.Intent
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import com.example.myapplication.model.DatabaseAccount
 
 
@@ -29,19 +30,19 @@ class MainActivity : ComponentActivity() {
             val username = usernameEditText.text.toString()
             val password = passwordEditText.text.toString()
 
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-            finish()
+//            val intent = Intent(this, HomeActivity::class.java)
+//            startActivity(intent)
+//            finish()
 
-//            if (databaseHelper.checkUser(username, password)) {
-//                Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show()
-//                // Chuyển sang màn hình khác nếu muốn
-//                val intent = Intent(this, HomeActivity::class.java)
-//                startActivity(intent)
-//                finish()
-//            } else {
-//                Toast.makeText(this, "Tên đăng nhập hoặc mật khẩu sai!", Toast.LENGTH_SHORT).show()
-//            }
+            if (databaseHelper.checkUser(username, password)) {
+                Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show()
+                // Chuyển sang màn hình khác nếu muốn
+                val intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
+                finish()
+            } else {
+                Toast.makeText(this, "Tên đăng nhập hoặc mật khẩu sai!", Toast.LENGTH_SHORT).show()
+            }
         }
 
         registerButton.setOnClickListener {

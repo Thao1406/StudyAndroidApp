@@ -19,7 +19,7 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/imageButton7"
+                android:id="@+id/backbutton"
                 android:layout_width="60dp"
                 android:layout_height="40dp"
                 android:scaleType="fitCenter"
@@ -28,16 +28,17 @@
 
             <TextView
                 android:id="@+id/title_item"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="20sp"
-                android:textAlignment="center"
-                android:text="Con hổ" />
+                android:paddingStart="100dp"
+                android:text="Tên con vật"
+                tools:ignore="RtlSymmetry" />
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/imageButton4"
+        <ImageView
+            android:id="@+id/itemimage"
             android:layout_width="match_parent"
             android:layout_height="500dp"
             android:adjustViewBounds="true"
@@ -56,7 +57,7 @@
                 android:textAlignment="center"
                 android:textSize="30sp"
                 android:layout_marginBottom="5dp"
-                android:text="Con hổ" />
+                android:text="Tên con vật" />
 
             <LinearLayout
                 android:layout_width="match_parent"

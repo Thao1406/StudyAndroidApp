@@ -32,7 +32,7 @@
                 android:id="@+id/textView4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
+                android:paddingStart="50dp"
                 android:textSize="20sp"
                 android:layout_weight="1"
                 android:text="THÔNG TIN TÀI KHOẢN" />
