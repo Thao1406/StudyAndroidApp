@@ -1,7 +1,9 @@
 package com.example.myapplication.controller
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
@@ -11,43 +13,51 @@ import com.example.myapplication.controller.detection.BoundingBox
 import com.example.myapplication.controller.detection.Constants
 import com.example.myapplication.controller.detection.Detector
 import android.util.Log
+import com.example.myapplication.model.DatabaseItem
 
 class CameraDetectActivity : AppCompatActivity(), Detector.DetectorListener {
 
     private lateinit var imageView: ImageView
     private lateinit var resultTextView: TextView
     private lateinit var detector: Detector
+    private lateinit var database: DatabaseItem
     private val TAG = "CameraDetectActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera_detect)
 
+        // Khởi tạo database
+        database = DatabaseItem(this)
+
         imageView = findViewById(R.id.imageViewResult)
         resultTextView = findViewById(R.id.resultTextView)
 
-        // Nhận ảnh bitmap từ intent
-        val photo = intent.getParcelableExtra<Bitmap>("photo")
-        if (photo != null) {
-            // Hiển thị ảnh gốc trên ImageView
-            imageView.setImageBitmap(photo)
+        // Nhận URI từ Intent
+        val photoUriString = intent.getStringExtra("photoUri")
+        if (photoUriString != null) {
+            val photoUri = Uri.parse(photoUriString)
+            val photo = BitmapFactory.decodeStream(contentResolver.openInputStream(photoUri))
+            if (photo != null) {
+                // Hiển thị ảnh gốc trên ImageView
+                imageView.setImageBitmap(photo)
 
-            // Áp dụng tiền xử lý: Tăng cường độ sáng và độ tương phản
-            val enhancedBitmap = enhanceBitmap(photo)
+                // Áp dụng tiền xử lý và các bước tiếp theo
+                val enhancedBitmap = enhanceBitmap(photo)
 
-            // Khởi tạo Detector
-            detector = Detector(
-                context = this,
-                modelPath = Constants.MODEL_PATH,
-                labelPath = Constants.LABELS_PATH,
-                detectorListener = this
-            )
-            detector.setup()
-
-            // Chạy nhận diện trên ảnh đã được tiền xử lý
-            detector.detect(enhancedBitmap)
+                // Khởi tạo và chạy nhận diện
+                detector = Detector(
+                    context = this,
+                    modelPath = Constants.MODEL_PATH,
+                    labelPath = Constants.LABELS_PATH,
+                    detectorListener = this
+                )
+                detector.setup()
+                detector.detect(enhancedBitmap)
+            }
         }
     }
+
 
     // Hàm tiền xử lý để tăng cường độ sáng và độ tương phản
     private fun enhanceBitmap(bitmap: Bitmap): Bitmap {
@@ -80,15 +90,38 @@ class CameraDetectActivity : AppCompatActivity(), Detector.DetectorListener {
 
     // Xử lý khi phát hiện đồ vật
     override fun onDetect(boundingBoxes: List<BoundingBox>, inferenceTime: Long) {
-        val resultText = boundingBoxes.joinToString("\n") { "${it.clsName}: ${it.cnf * 100}%" }
-        resultTextView.text = "$resultText"
+        // Hiển thị tất cả nhãn đã phát hiện trong resultTextView
+        val resultText = boundingBoxes.joinToString("\n") { it.clsName }
+        resultTextView.text = resultText
 
-        Log.d(TAG, "Detection Results:")
-        boundingBoxes.forEach { box ->
-            Log.d(TAG, "Class: ${box.clsName}, Confidence: ${box.cnf * 100}%")
+        // Lấy các View TextView từ layout
+        val vn_item = findViewById<TextView>(R.id.vietnamese_item)
+        val eng_item = findViewById<TextView>(R.id.english_item)
+
+        // Chuẩn bị nội dung riêng cho mỗi TextView
+        val vnText = StringBuilder()
+        val engText = StringBuilder()
+
+        // Xử lý từng nhãn
+        val detectedLabels = boundingBoxes.map { it.clsName }
+        for (label in detectedLabels) {
+            val image = database.getImageByLabel(label)
+            if (image != null) {
+                // Nếu tìm thấy trong cơ sở dữ liệu
+                vnText.append("${image.vietnameseText}\n")
+                engText.append("${image.englishText}\n")
+            } else {
+                // Nếu không tìm thấy trong cơ sở dữ liệu
+                vnText.append("Không tìm thấy trong cơ sở dữ liệu.\n")
+                engText.append("Not found in the database.\n")
+            }
         }
-        Log.d(TAG, "Inference Time: $inferenceTime ms")
+
+        // Cập nhật nội dung cho TextView
+        vn_item.text = vnText.toString()
+        eng_item.text = engText.toString()
     }
+
 
     // Dọn dẹp tài nguyên khi hủy Activity
     override fun onDestroy() {

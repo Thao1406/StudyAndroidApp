@@ -5,8 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
-import android.os.Build
+import androidx.core.content.FileProvider
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -23,11 +22,18 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import com.example.myapplication.R
 import com.example.myapplication.model.DatabaseItem
-import com.example.myapplication.model.ImageRecognition
 import java.io.File
 import android.content.res.AssetManager
 import android.graphics.BitmapFactory
+import android.net.Uri
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.Button
+import android.widget.PopupWindow
+import com.example.myapplication.model.DatabaseAccount
 import java.io.FileNotFoundException
+import java.io.FileOutputStream
 import java.io.InputStream
 
 class HomeActivity : AppCompatActivity() {
@@ -44,6 +50,11 @@ class HomeActivity : AppCompatActivity() {
         val cameraButton = findViewById<ImageButton>(R.id.btncamera)
         val userInforButton = findViewById<ImageButton>(R.id.userInformation)
         val gridLayout = findViewById<androidx.gridlayout.widget.GridLayout>(R.id.gridLayout) // Thêm tham chiếu GridLayout
+
+        val isLoggedIn = intent.getBooleanExtra("isLoggedIn", false)
+        if (isLoggedIn) {
+            Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show()
+        }
 
         rootView.setOnApplyWindowInsetsListener { view, insets ->
             // Sử dụng các API tương thích với API 29
@@ -82,8 +93,79 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        val menuButton = findViewById<ImageButton>(R.id.imageButton2)
 
+        menuButton.setOnClickListener {
+            showPopupMenu(it) // Gọi hàm hiển thị popup
+        }
     }
+
+    private fun showPopupMenu(anchor: View) {
+        val inflater = LayoutInflater.from(this)
+        val popupView = inflater.inflate(R.layout.popup_menu, null)
+
+        val popupWindow = PopupWindow(
+            popupView,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            true
+        )
+
+        val btnLogout = popupView.findViewById<Button>(R.id.btn_logout)
+        val btnInfo = popupView.findViewById<Button>(R.id.btn_info)
+
+        btnLogout.setOnClickListener {
+            Toast.makeText(this, "Đăng xuất", Toast.LENGTH_SHORT).show()
+            popupWindow.dismiss()
+            logout()
+        }
+
+        btnInfo.setOnClickListener {
+            Toast.makeText(this, "Thông tin ứng dụng", Toast.LENGTH_SHORT).show()
+            popupWindow.dismiss()
+            openAppInfo()
+        }
+
+        // Lấy tọa độ của anchor
+        anchor.post {
+            val location = IntArray(2)
+            anchor.getLocationOnScreen(location)
+
+            val screenWidth = resources.displayMetrics.widthPixels
+
+            // Đo kích thước PopupWindow
+            popupView.measure(
+                View.MeasureSpec.UNSPECIFIED,
+                View.MeasureSpec.UNSPECIFIED
+            )
+            val popupWidth = popupView.measuredWidth
+            val popupHeight = popupView.measuredHeight
+
+            // Tính toán tọa độ X và Y
+            val x = screenWidth - popupWidth - 20 // Căn sát lề phải, thêm padding 20dp nếu cần
+            val y = location[1] - popupHeight // Hiển thị ngay phía trên anchor
+
+            // Hiển thị PopupWindow tại vị trí tính toán
+            popupWindow.showAtLocation(anchor, Gravity.NO_GRAVITY, x, y)
+        }
+    }
+
+
+    private fun logout() {
+        val databaseHelper = DatabaseAccount(this)
+        databaseHelper.logout()
+        Toast.makeText(this, "Bạn đã đăng xuất", Toast.LENGTH_SHORT).show()
+        // Chuyển về màn hình đăng nhập
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun openAppInfo() {
+        val intent = Intent(this, AppInforActivity::class.java)
+        startActivity(intent)
+    }
+
 
     private fun updateUI(gridLayout: androidx.gridlayout.widget.GridLayout) {
         val dbHelper = DatabaseItem(this)
@@ -176,18 +258,42 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    private lateinit var photoUri: Uri
+
     private fun openCamera() {
+        // Tạo một file tạm để lưu ảnh
+        val photoFile = File.createTempFile("photo_${System.currentTimeMillis()}", ".jpg", cacheDir)
+        photoUri = FileProvider.getUriForFile(this, "${applicationContext.packageName}.fileprovider", photoFile)
+
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
         startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE)
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            val photo = data?.extras?.get("data") as Bitmap
+            // Truyền URI của ảnh qua Intent
             val intent = Intent(this, CameraDetectActivity::class.java)
-            intent.putExtra("photo", photo)
+            intent.putExtra("photoUri", photoUri.toString())
             startActivity(intent)
         }
     }
+
+
+    // Lưu Bitmap thành tệp tạm và trả về URI
+    private fun saveBitmapToFile(bitmap: Bitmap): Uri {
+        val file = File(cacheDir, "photo_${System.currentTimeMillis()}.jpg")
+        try {
+            val outputStream = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            outputStream.flush()
+            outputStream.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return Uri.fromFile(file)
+    }
+
 }
