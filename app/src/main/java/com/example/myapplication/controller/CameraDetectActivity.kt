@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -12,8 +14,8 @@ import com.example.myapplication.R
 import com.example.myapplication.controller.detection.BoundingBox
 import com.example.myapplication.controller.detection.Constants
 import com.example.myapplication.controller.detection.Detector
-import android.util.Log
 import com.example.myapplication.model.DatabaseItem
+import java.util.*
 
 class CameraDetectActivity : AppCompatActivity(), Detector.DetectorListener {
 
@@ -21,6 +23,7 @@ class CameraDetectActivity : AppCompatActivity(), Detector.DetectorListener {
     private lateinit var resultTextView: TextView
     private lateinit var detector: Detector
     private lateinit var database: DatabaseItem
+    private lateinit var textToSpeech: TextToSpeech
     private val TAG = "CameraDetectActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,8 +33,39 @@ class CameraDetectActivity : AppCompatActivity(), Detector.DetectorListener {
         // Khởi tạo database
         database = DatabaseItem(this)
 
+        // Khởi tạo TTS
+        textToSpeech = TextToSpeech(this) { status ->
+            if (status == TextToSpeech.SUCCESS) {
+                textToSpeech.language = Locale.US // Đặt ngôn ngữ mặc định là tiếng Anh
+            }
+        }
+
         imageView = findViewById(R.id.imageViewResult)
         resultTextView = findViewById(R.id.resultTextView)
+
+        val vieSpeaker = findViewById<ImageButton>(R.id.vie_speaker)
+        val engSpeaker = findViewById<ImageButton>(R.id.eng_speaker)
+
+        val vietnameseItem = findViewById<TextView>(R.id.vietnamese_item)
+        val englishItem = findViewById<TextView>(R.id.english_item)
+
+        // Sự kiện cho nút phát tiếng Việt
+        vieSpeaker.setOnClickListener {
+            val textToSpeak = vietnameseItem.text.toString()
+            if (textToSpeak.isNotEmpty()) {
+                textToSpeech.language = Locale("vi", "VN") // Đặt ngôn ngữ là tiếng Việt
+                textToSpeech.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null)
+            }
+        }
+
+        // Sự kiện cho nút phát tiếng Anh
+        engSpeaker.setOnClickListener {
+            val textToSpeak = englishItem.text.toString()
+            if (textToSpeak.isNotEmpty()) {
+                textToSpeech.language = Locale.US // Đặt ngôn ngữ là tiếng Anh
+                textToSpeech.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null)
+            }
+        }
 
         // Nhận URI từ Intent
         val photoUriString = intent.getStringExtra("photoUri")
@@ -57,7 +91,6 @@ class CameraDetectActivity : AppCompatActivity(), Detector.DetectorListener {
             }
         }
     }
-
 
     // Hàm tiền xử lý để tăng cường độ sáng và độ tương phản
     private fun enhanceBitmap(bitmap: Bitmap): Bitmap {
@@ -85,7 +118,6 @@ class CameraDetectActivity : AppCompatActivity(), Detector.DetectorListener {
     // Xử lý khi không phát hiện đồ vật nào
     override fun onEmptyDetect() {
         resultTextView.text = "Không phát hiện đồ vật nào"
-        Log.d(TAG, "Không phát hiện đồ vật nào")
     }
 
     // Xử lý khi phát hiện đồ vật
@@ -95,8 +127,8 @@ class CameraDetectActivity : AppCompatActivity(), Detector.DetectorListener {
         resultTextView.text = resultText
 
         // Lấy các View TextView từ layout
-        val vn_item = findViewById<TextView>(R.id.vietnamese_item)
-        val eng_item = findViewById<TextView>(R.id.english_item)
+        val vnItem = findViewById<TextView>(R.id.vietnamese_item)
+        val engItem = findViewById<TextView>(R.id.english_item)
 
         // Chuẩn bị nội dung riêng cho mỗi TextView
         val vnText = StringBuilder()
@@ -118,14 +150,14 @@ class CameraDetectActivity : AppCompatActivity(), Detector.DetectorListener {
         }
 
         // Cập nhật nội dung cho TextView
-        vn_item.text = vnText.toString()
-        eng_item.text = engText.toString()
+        vnItem.text = vnText.toString()
+        engItem.text = engText.toString()
     }
-
 
     // Dọn dẹp tài nguyên khi hủy Activity
     override fun onDestroy() {
         super.onDestroy()
         detector.clear()
+        textToSpeech.shutdown() // Giải phóng tài nguyên TTS
     }
 }

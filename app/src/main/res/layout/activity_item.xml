@@ -76,7 +76,7 @@
                     android:text="Vietnamese" />
 
                 <ImageButton
-                    android:id="@+id/imageButton5"
+                    android:id="@+id/vn_speaker"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:background="@drawable/outline_button"
@@ -100,7 +100,7 @@
                     android:text="English" />
 
                 <ImageButton
-                    android:id="@+id/imageButton6"
+                    android:id="@+id/eng_speaker"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:scaleType="fitCenter"

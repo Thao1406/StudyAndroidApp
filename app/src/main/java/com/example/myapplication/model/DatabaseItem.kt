@@ -11,40 +11,42 @@ data class ImageRecognition(
     val id: Int,
     val imagePath: String,
     val vietnameseText: String,
-    val englishText: String,
-    val voiceVietnamesePath: String?,
-    val voiceEnglishPath: String?
+    val englishText: String
 )
 
 class DatabaseItem(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 1 // Tăng version để cập nhật bảng
         private const val DATABASE_NAME = "ImageDatabase.db"
         private const val TABLE_IMAGES = "Images"
         private const val COLUMN_ID = "id"
         private const val COLUMN_IMAGE_PATH = "image_path"
         private const val COLUMN_VIETNAMESE_TEXT = "vietnamese"
         private const val COLUMN_ENGLISH_TEXT = "english"
-        private const val COLUMN_VOICE_VIETNAMESE_PATH = "voice_vietnamese"
-        private const val COLUMN_VOICE_ENGLISH_PATH = "voice_english"
         private const val DATA_FILE_NAME = "data.txt" // Tên file trong thư mục assets
     }
 
     private val appContext = context.applicationContext
 
     override fun onCreate(db: SQLiteDatabase) {
-        val createTable = ("CREATE TABLE $TABLE_IMAGES ("
-                + "$COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "$COLUMN_IMAGE_PATH TEXT, "
-                + "$COLUMN_VIETNAMESE_TEXT TEXT, "
-                + "$COLUMN_ENGLISH_TEXT TEXT, "
-                + "$COLUMN_VOICE_VIETNAMESE_PATH TEXT, "
-                + "$COLUMN_VOICE_ENGLISH_PATH TEXT)")
+        val createTable = """
+            CREATE TABLE $TABLE_IMAGES (
+                $COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                $COLUMN_IMAGE_PATH TEXT,
+                $COLUMN_VIETNAMESE_TEXT TEXT,
+                $COLUMN_ENGLISH_TEXT TEXT
+            )
+        """.trimIndent()
         db.execSQL(createTable)
 
         // Đọc dữ liệu từ file txt và chèn vào cơ sở dữ liệu
         loadDataFromTxt(db)
+    }
+
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_IMAGES")
+        onCreate(db)
     }
 
     private fun loadDataFromTxt(db: SQLiteDatabase) {
@@ -57,12 +59,14 @@ class DatabaseItem(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
                 lines.forEach { line ->
                     val parts = line.split(";") // Dữ liệu được phân tách bằng dấu ";"
                     if (parts.size >= 3) { // Đảm bảo đủ dữ liệu
+                        val imagePath = parts[0].trim()
+                        val vietnameseText = parts[1].trim().replace("_", " ") // Xử lý dấu "_"
+                        val englishText = parts[2].trim().replace("_", " ") // Xử lý dấu "_"
+
                         val values = ContentValues().apply {
-                            put(COLUMN_IMAGE_PATH, parts[0].trim())
-                            put(COLUMN_VIETNAMESE_TEXT, parts[1].trim())
-                            put(COLUMN_ENGLISH_TEXT, parts[2].trim())
-                            put(COLUMN_VOICE_VIETNAMESE_PATH, parts.getOrNull(3)?.trim())
-                            put(COLUMN_VOICE_ENGLISH_PATH, parts.getOrNull(4)?.trim())
+                            put(COLUMN_IMAGE_PATH, imagePath)
+                            put(COLUMN_VIETNAMESE_TEXT, vietnameseText)
+                            put(COLUMN_ENGLISH_TEXT, englishText)
                         }
                         db.insert(TABLE_IMAGES, null, values)
                     }
@@ -74,11 +78,6 @@ class DatabaseItem(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         }
     }
 
-    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS $TABLE_IMAGES")
-        onCreate(db)
-    }
-
     fun getAllImages(): List<ImageRecognition> {
         val imagesList = mutableListOf<ImageRecognition>()
         val db = this.readableDatabase
@@ -86,27 +85,18 @@ class DatabaseItem(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
 
         if (cursor.moveToFirst()) {
             do {
-                val idIndex = cursor.getColumnIndex(COLUMN_ID)
-                val imagePathIndex = cursor.getColumnIndex(COLUMN_IMAGE_PATH)
-                val vietnameseTextIndex = cursor.getColumnIndex(COLUMN_VIETNAMESE_TEXT)
-                val englishTextIndex = cursor.getColumnIndex(COLUMN_ENGLISH_TEXT)
-                val voiceVietnamesePathIndex = cursor.getColumnIndex(COLUMN_VOICE_VIETNAMESE_PATH)
-                val voiceEnglishPathIndex = cursor.getColumnIndex(COLUMN_VOICE_ENGLISH_PATH)
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
+                val imagePath = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE_PATH))
+                val vietnameseText = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_VIETNAMESE_TEXT))
+                val englishText = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ENGLISH_TEXT))
 
-                // Kiểm tra nếu tất cả các chỉ số cột đều hợp lệ (≥ 0)
-                if (idIndex >= 0 && imagePathIndex >= 0 && vietnameseTextIndex >= 0 &&
-                    englishTextIndex >= 0 && voiceVietnamesePathIndex >= 0 && voiceEnglishPathIndex >= 0) {
-
-                    val image = ImageRecognition(
-                        id = cursor.getInt(idIndex),
-                        imagePath = cursor.getString(imagePathIndex),
-                        vietnameseText = cursor.getString(vietnameseTextIndex),
-                        englishText = cursor.getString(englishTextIndex),
-                        voiceVietnamesePath = cursor.getString(voiceVietnamesePathIndex),
-                        voiceEnglishPath = cursor.getString(voiceEnglishPathIndex)
-                    )
-                    imagesList.add(image)
-                }
+                val image = ImageRecognition(
+                    id = id,
+                    imagePath = imagePath,
+                    vietnameseText = vietnameseText,
+                    englishText = englishText
+                )
+                imagesList.add(image)
             } while (cursor.moveToNext())
         }
 
@@ -131,7 +121,7 @@ class DatabaseItem(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
             TABLE_IMAGES,
             null,
             "$COLUMN_ENGLISH_TEXT = ?",
-            arrayOf(label),
+            arrayOf(label.replace("_", " ")), // Xử lý dấu "_" nếu có
             null,
             null,
             null
@@ -143,9 +133,7 @@ class DatabaseItem(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
                 id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)),
                 imagePath = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE_PATH)),
                 vietnameseText = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_VIETNAMESE_TEXT)),
-                englishText = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ENGLISH_TEXT)),
-                voiceVietnamesePath = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_VOICE_VIETNAMESE_PATH)),
-                voiceEnglishPath = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_VOICE_ENGLISH_PATH))
+                englishText = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ENGLISH_TEXT))
             )
         }
         cursor.close()

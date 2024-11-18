@@ -27,8 +27,6 @@ class Checkdb : AppCompatActivity() {
             stringBuilder.append("Image Path: ${image.imagePath}\n")
             stringBuilder.append("Vietnamese Text: ${image.vietnameseText}\n")
             stringBuilder.append("English Text: ${image.englishText}\n")
-            stringBuilder.append("Voice Vietnamese Path: ${image.voiceVietnamesePath}\n")
-            stringBuilder.append("Voice English Path: ${image.voiceEnglishPath}\n")
         }
 
         textView.text = stringBuilder.toString()

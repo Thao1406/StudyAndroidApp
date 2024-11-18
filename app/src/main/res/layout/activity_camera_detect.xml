@@ -67,7 +67,7 @@
                         android:textSize="20sp" />
 
                     <ImageButton
-                        android:id="@+id/imageButton3"
+                        android:id="@+id/vie_speaker"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_margin="5dp"
@@ -95,7 +95,7 @@
                         android:textSize="20sp" />
 
                     <ImageButton
-                        android:id="@+id/imageButton13"
+                        android:id="@+id/eng_speaker"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_margin="5dp"
