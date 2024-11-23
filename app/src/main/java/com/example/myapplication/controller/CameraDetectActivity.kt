@@ -1,14 +1,18 @@
 package com.example.myapplication.controller
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
-import android.widget.ImageButton
+import android.view.MotionEvent
 import android.widget.ImageView
-import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.R
 import com.example.myapplication.controller.detection.BoundingBox
@@ -20,11 +24,13 @@ import java.util.*
 class CameraDetectActivity : AppCompatActivity(), Detector.DetectorListener {
 
     private lateinit var imageView: ImageView
-    private lateinit var resultTextView: TextView
     private lateinit var detector: Detector
     private lateinit var database: DatabaseItem
     private lateinit var textToSpeech: TextToSpeech
-    private val TAG = "CameraDetectActivity"
+
+    private var clickCount = 0
+    private lateinit var boundingBoxes: List<BoundingBox>
+    private val boxClickCount = mutableMapOf<String, Int>() // Đếm số lần click vào từng vật thể
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,31 +47,6 @@ class CameraDetectActivity : AppCompatActivity(), Detector.DetectorListener {
         }
 
         imageView = findViewById(R.id.imageViewResult)
-        resultTextView = findViewById(R.id.resultTextView)
-
-        val vieSpeaker = findViewById<ImageButton>(R.id.vie_speaker)
-        val engSpeaker = findViewById<ImageButton>(R.id.eng_speaker)
-
-        val vietnameseItem = findViewById<TextView>(R.id.vietnamese_item)
-        val englishItem = findViewById<TextView>(R.id.english_item)
-
-        // Sự kiện cho nút phát tiếng Việt
-        vieSpeaker.setOnClickListener {
-            val textToSpeak = vietnameseItem.text.toString()
-            if (textToSpeak.isNotEmpty()) {
-                textToSpeech.language = Locale("vi", "VN") // Đặt ngôn ngữ là tiếng Việt
-                textToSpeech.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null)
-            }
-        }
-
-        // Sự kiện cho nút phát tiếng Anh
-        engSpeaker.setOnClickListener {
-            val textToSpeak = englishItem.text.toString()
-            if (textToSpeak.isNotEmpty()) {
-                textToSpeech.language = Locale.US // Đặt ngôn ngữ là tiếng Anh
-                textToSpeech.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null)
-            }
-        }
 
         // Nhận URI từ Intent
         val photoUriString = intent.getStringExtra("photoUri")
@@ -90,9 +71,94 @@ class CameraDetectActivity : AppCompatActivity(), Detector.DetectorListener {
                 detector.detect(enhancedBitmap)
             }
         }
+
+        // Xử lý sự kiện click trên ảnh
+        imageView.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                val x = event.x / imageView.width
+                val y = event.y / imageView.height
+
+                // Kiểm tra nếu click vào bounding box nào
+                for (box in boundingBoxes) {
+                    if (x >= box.x1 && x <= box.x2 && y >= box.y1 && y <= box.y2) {
+                        val label = box.clsName
+
+                        // Phát âm thanh
+                        playSoundForBox(label)
+
+                        // Đếm số lần click
+                        boxClickCount[label] = boxClickCount.getOrDefault(label, 0) + 1
+                        clickCount++
+
+                        // Kiểm tra nếu đạt 10 click
+                        if (clickCount >= 10) {
+                            val mostClickedLabel = boxClickCount.maxByOrNull { it.value }?.key
+                            val clickedBox = boundingBoxes.firstOrNull { it.clsName == mostClickedLabel }
+                            goToQuestionActivity(clickedBox)
+                        }
+                        break
+                    }
+                }
+            }
+            true
+        }
     }
 
-    // Hàm tiền xử lý để tăng cường độ sáng và độ tương phản
+    private fun drawBoundingBoxes(bitmap: Bitmap, boxes: List<BoundingBox>): Bitmap {
+        val mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
+        val canvas = Canvas(mutableBitmap)
+
+        // Paint cho bounding box
+        val boxPaint = Paint().apply {
+            color = Color.RED
+            style = Paint.Style.STROKE
+            strokeWidth = 8f // Độ dày của viền
+        }
+
+        // Paint cho nhãn
+        val textPaint = Paint().apply {
+            color = Color.YELLOW
+            textSize = 48f // Kích thước chữ
+            isAntiAlias = true
+            style = Paint.Style.FILL
+        }
+
+        for (box in boxes) {
+            val left = box.x1 * bitmap.width
+            val top = box.y1 * bitmap.height
+            val right = box.x2 * bitmap.width
+            val bottom = box.y2 * bitmap.height
+
+            // Vẽ bounding box
+            canvas.drawRect(left, top, right, bottom, boxPaint)
+
+            // Vẽ nhãn
+            val label = box.clsName // Nhãn của đối tượng
+            canvas.drawText(label, left + 10, top - 10, textPaint) // Hiển thị nhãn phía trên bên trái box
+        }
+
+        return mutableBitmap
+    }
+
+    private fun playSoundForBox(label: String) {
+        val vietnameseSound = database.getImageByLabel(label)?.vietnameseText ?: "Không có dữ liệu"
+        val englishSound = database.getImageByLabel(label)?.englishText ?: "No data"
+
+        // Phát âm thanh tiếng Việt
+        textToSpeech.language = Locale("vi", "VN")
+        textToSpeech.speak(vietnameseSound, TextToSpeech.QUEUE_FLUSH, null, null)
+
+        // Phát âm thanh tiếng Anh sau tiếng Việt
+        textToSpeech.language = Locale.US
+        textToSpeech.speak(englishSound, TextToSpeech.QUEUE_ADD, null, null)
+    }
+
+    private fun goToQuestionActivity(box: BoundingBox?) {
+        val intent = Intent(this, QuestionActivity::class.java)
+        intent.putExtra("correctAnswer", box?.clsName) // Truyền nhãn đối tượng đúng
+        startActivity(intent)
+    }
+
     private fun enhanceBitmap(bitmap: Bitmap): Bitmap {
         val width = bitmap.width
         val height = bitmap.height
@@ -104,9 +170,9 @@ class CameraDetectActivity : AppCompatActivity(), Detector.DetectorListener {
         for (x in 0 until width) {
             for (y in 0 until height) {
                 val pixel = bitmap.getPixel(x, y)
-                var red = (Color.red(pixel) * contrast + brightness).coerceIn(0f, 255f)
-                var green = (Color.green(pixel) * contrast + brightness).coerceIn(0f, 255f)
-                var blue = (Color.blue(pixel) * contrast + brightness).coerceIn(0f, 255f)
+                val red = (Color.red(pixel) * contrast + brightness).coerceIn(0f, 255f)
+                val green = (Color.green(pixel) * contrast + brightness).coerceIn(0f, 255f)
+                val blue = (Color.blue(pixel) * contrast + brightness).coerceIn(0f, 255f)
 
                 enhancedBitmap.setPixel(x, y, Color.rgb(red.toInt(), green.toInt(), blue.toInt()))
             }
@@ -115,49 +181,25 @@ class CameraDetectActivity : AppCompatActivity(), Detector.DetectorListener {
         return enhancedBitmap
     }
 
-    // Xử lý khi không phát hiện đồ vật nào
     override fun onEmptyDetect() {
-        resultTextView.text = "Không phát hiện đồ vật nào"
-    }
-
-    // Xử lý khi phát hiện đồ vật
-    override fun onDetect(boundingBoxes: List<BoundingBox>, inferenceTime: Long) {
-        // Hiển thị tất cả nhãn đã phát hiện trong resultTextView
-        val resultText = boundingBoxes.joinToString("\n") { it.clsName }
-        resultTextView.text = resultText
-
-        // Lấy các View TextView từ layout
-        val vnItem = findViewById<TextView>(R.id.vietnamese_item)
-        val engItem = findViewById<TextView>(R.id.english_item)
-
-        // Chuẩn bị nội dung riêng cho mỗi TextView
-        val vnText = StringBuilder()
-        val engText = StringBuilder()
-
-        // Xử lý từng nhãn
-        val detectedLabels = boundingBoxes.map { it.clsName }
-        for (label in detectedLabels) {
-            val image = database.getImageByLabel(label)
-            if (image != null) {
-                // Nếu tìm thấy trong cơ sở dữ liệu
-                vnText.append("${image.vietnameseText}\n")
-                engText.append("${image.englishText}\n")
-            } else {
-                // Nếu không tìm thấy trong cơ sở dữ liệu
-                vnText.append("Không tìm thấy trong cơ sở dữ liệu.\n")
-                engText.append("Not found in the database.\n")
-            }
+        // Thông báo khi không phát hiện vật thể nào
+        runOnUiThread {
+            Toast.makeText(this, "Không phát hiện vật thể nào!", Toast.LENGTH_SHORT).show()
         }
-
-        // Cập nhật nội dung cho TextView
-        vnItem.text = vnText.toString()
-        engItem.text = engText.toString()
     }
 
-    // Dọn dẹp tài nguyên khi hủy Activity
+    override fun onDetect(boundingBoxes: List<BoundingBox>, inferenceTime: Long) {
+        this.boundingBoxes = boundingBoxes
+
+        // Vẽ bounding boxes lên ảnh
+        val photo = (imageView.drawable as BitmapDrawable).bitmap
+        val detectedBitmap = drawBoundingBoxes(photo, boundingBoxes)
+        imageView.setImageBitmap(detectedBitmap)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         detector.clear()
-        textToSpeech.shutdown() // Giải phóng tài nguyên TTS
+        textToSpeech.shutdown()
     }
 }

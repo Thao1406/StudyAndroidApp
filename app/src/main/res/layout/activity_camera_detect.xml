@@ -9,105 +9,11 @@
 
     <ImageView
         android:id="@+id/imageViewResult"
-        android:layout_width="300dp"
-        android:layout_height="600dp"
+        android:layout_width="380dp"
+        android:layout_height="800dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/outline_imageview"
         android:scaleType="centerCrop" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingTop="10dp">
-
-        <TextView
-            android:id="@+id/resultTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:background="@drawable/outline_button"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:text="Nhãn ở đây"
-            android:textColor="@color/black"
-            android:textSize="22sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/outline_button1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingTop="10dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:id="@+id/vietnamese_item"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:textColor="@color/black"
-                        android:text="Vietnamese"
-                        android:textSize="20sp" />
-
-                    <ImageButton
-                        android:id="@+id/vie_speaker"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_margin="5dp"
-                        android:background="@drawable/outline_button"
-                        android:scaleType="centerInside"
-                        android:scaleX="1.2"
-                        app:srcCompat="@drawable/speaker" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:id="@+id/english_item"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:textColor="@color/black"
-                        android:text="English"
-                        android:textSize="20sp" />
-
-                    <ImageButton
-                        android:id="@+id/eng_speaker"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_margin="5dp"
-                        android:background="@drawable/outline_button"
-                        android:scaleType="centerInside"
-                        android:scaleX="1.2"
-                        app:srcCompat="@drawable/speaker" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-        </LinearLayout>
-    </LinearLayout>
 
 </LinearLayout>

@@ -46,6 +46,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat-resources:$appcompat_version")
     implementation("org.tensorflow:tensorflow-lite:2.16.1")
     implementation("org.tensorflow:tensorflow-lite-support:0.4.4")
+    implementation ("com.airbnb.android:lottie:6.1.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

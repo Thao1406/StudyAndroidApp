@@ -1,3 +1,5 @@
+package com.example.myapplication.controller
+
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -7,22 +9,35 @@ import android.speech.tts.TextToSpeech
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.airbnb.lottie.LottieAnimationView
 import com.example.myapplication.R
 import com.example.myapplication.model.DatabaseItem
-import java.util.*
+import java.util.Locale
 
 class QuestionActivity : AppCompatActivity() {
 
     private lateinit var textToSpeech: TextToSpeech
     private lateinit var database: DatabaseItem
+    private val handler = Handler() // Handler tương thích với API 29
+    private lateinit var fireworksAnimation: LottieAnimationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_question)
 
-        // Khởi tạo TextToSpeech
+        fireworksAnimation = findViewById(R.id.fireworksAnimation)
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
         textToSpeech = TextToSpeech(this) { status ->
             if (status == TextToSpeech.SUCCESS) {
                 textToSpeech.language = Locale.US
@@ -33,11 +48,17 @@ class QuestionActivity : AppCompatActivity() {
         database = DatabaseItem(this)
 
         // Nhận nhãn đúng từ Intent
-        val correctAnswer = intent.getStringExtra("correctAnswer") ?: "Không xác định"
+        val correctAnswerEnglish = intent.getStringExtra("correctAnswer") ?: "Unknown"
+
+        // Lấy giá trị tiếng Việt từ cơ sở dữ liệu
+        val correctAnswer = database.getAllImages()
+            .firstOrNull { it.englishText == correctAnswerEnglish } // Tìm đối tượng có EnglishText trùng khớp
+            ?.vietnameseText ?: "Không xác định" // Nếu tìm thấy, lấy VietnameseText; nếu không, trả về "Không xác định"
+
 
         // Lấy đáp án sai từ database
         val incorrectAnswers = database.getAllImages()
-            .map { it.englishText }
+            .map { it.vietnameseText }
             .filter { it != correctAnswer }
             .shuffled()
             .take(2) // Lấy 2 đáp án sai
@@ -52,7 +73,7 @@ class QuestionActivity : AppCompatActivity() {
         val answerButton2 = findViewById<Button>(R.id.answerButton2)
         val answerButton3 = findViewById<Button>(R.id.answerButton3)
 
-        questionText.text = "Đây là con gì?"
+        questionText.text = "Hình bạn vừa chọn là thứ gì ? "
         answerButton1.text = shuffledOptions[0]
         answerButton2.text = shuffledOptions[1]
         answerButton3.text = shuffledOptions[2]
@@ -89,12 +110,19 @@ class QuestionActivity : AppCompatActivity() {
         button.background = drawable
 
         // Đặt lại trạng thái ban đầu sau 1 giây
-        Handler(Looper.getMainLooper()).postDelayed({
+        handler.postDelayed({
             button.background = originalBackground
         }, 1000) // 1 giây
     }
 
     private fun showFireworks() {
+        fireworksAnimation.visibility = View.VISIBLE
+        fireworksAnimation.playAnimation()
+        fireworksAnimation.translationZ = 10f
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            fireworksAnimation.visibility = View.GONE
+        }, 3000)
         textToSpeech.language = Locale("vi", "VN")
         textToSpeech.speak("Chính xác!", TextToSpeech.QUEUE_FLUSH, null, null)
     }
