@@ -1,5 +1,6 @@
 package com.example.myapplication.controller
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -122,6 +123,9 @@ class QuestionActivity : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             fireworksAnimation.visibility = View.GONE
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
         }, 3000)
         textToSpeech.language = Locale("vi", "VN")
         textToSpeech.speak("Chính xác!", TextToSpeech.QUEUE_FLUSH, null, null)
