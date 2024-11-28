@@ -17,7 +17,7 @@ data class ImageRecognition(
 class DatabaseItem(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
-        private const val DATABASE_VERSION = 1 // Tăng version để cập nhật bảng
+        private const val DATABASE_VERSION = 2 // Tăng version để cập nhật bảng
         private const val DATABASE_NAME = "ImageDatabase.db"
         private const val TABLE_IMAGES = "Images"
         private const val COLUMN_ID = "id"
@@ -60,8 +60,8 @@ class DatabaseItem(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
                     val parts = line.split(";") // Dữ liệu được phân tách bằng dấu ";"
                     if (parts.size >= 3) { // Đảm bảo đủ dữ liệu
                         val imagePath = parts[0].trim()
-                        val vietnameseText = parts[1].trim().replace("_", " ") // Xử lý dấu "_"
-                        val englishText = parts[2].trim().replace("_", " ") // Xử lý dấu "_"
+                        val vietnameseText = parts[1].trim()
+                        val englishText = parts[2].trim()
 
                         val values = ContentValues().apply {
                             put(COLUMN_IMAGE_PATH, imagePath)
@@ -121,7 +121,7 @@ class DatabaseItem(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
             TABLE_IMAGES,
             null,
             "$COLUMN_ENGLISH_TEXT = ?",
-            arrayOf(label.replace("_", " ")), // Xử lý dấu "_" nếu có
+            arrayOf(label),
             null,
             null,
             null

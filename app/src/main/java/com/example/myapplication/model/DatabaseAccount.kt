@@ -10,7 +10,7 @@ import android.content.SharedPreferences
 class DatabaseAccount(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
-        private const val DATABASE_VERSION = 1 // Tăng phiên bản để cập nhật bảng
+        private const val DATABASE_VERSION = 1
         private const val DATABASE_NAME = "UserDatabase.db"
         private const val TABLE_USERS = "Users"
         private const val COLUMN_ID = "id"
@@ -21,6 +21,8 @@ class DatabaseAccount(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
         private const val COLUMN_EMAIL = "email"
         private const val COLUMN_PHONE = "phone"
         private const val COLUMN_ADDRESS = "address"
+        private const val COLUMN_AVATAR = "avatar"
+
 
         // Keys cho SharedPreferences
         private const val PREFS_NAME = "user_session"
@@ -42,7 +44,8 @@ class DatabaseAccount(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
                 $COLUMN_BIRTHDAY TEXT,
                 $COLUMN_EMAIL TEXT,
                 $COLUMN_PHONE TEXT,
-                $COLUMN_ADDRESS TEXT
+                $COLUMN_ADDRESS TEXT,
+                $COLUMN_AVATAR TEXT
             )
         """.trimIndent()
         db.execSQL(createTable)
@@ -66,7 +69,16 @@ class DatabaseAccount(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
     }
 
     // Thêm người dùng mới
-    fun addUser(username: String, password: String, name: String = "", birthday: String = "", email: String = "", phone: String = "", address: String = ""): Boolean {
+    fun addUser(
+        username: String,
+        password: String,
+        name: String = "",
+        birthday: String = "",
+        email: String = "",
+        phone: String = "",
+        address: String = "",
+        avatarUri: String? = null
+    ): Boolean {
         val db = this.writableDatabase
         val values = ContentValues().apply {
             put(COLUMN_USERNAME, username)
@@ -76,11 +88,13 @@ class DatabaseAccount(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
             put(COLUMN_EMAIL, email)
             put(COLUMN_PHONE, phone)
             put(COLUMN_ADDRESS, address)
+            if (avatarUri != null) put(COLUMN_AVATAR, avatarUri)
         }
         val result = db.insert(TABLE_USERS, null, values)
         db.close()
         return result != -1L
     }
+
 
 
     // Kiểm tra đăng nhập
@@ -109,7 +123,8 @@ class DatabaseAccount(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
                 birthday = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_BIRTHDAY)),
                 email = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EMAIL)),
                 phone = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PHONE)),
-                address = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ADDRESS))
+                address = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ADDRESS)),
+                avatarUri = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_AVATAR)) // Lấy đường dẫn ảnh
             )
         }
         cursor.close()
@@ -117,7 +132,15 @@ class DatabaseAccount(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
     }
 
     // Cập nhật thông tin người dùng
-    fun updateUserInfo(username: String, name: String, birthday: String, email: String, phone: String, address: String): Boolean {
+    fun updateUserInfo(
+        username: String,
+        name: String,
+        birthday: String,
+        email: String,
+        phone: String,
+        address: String,
+        avatarUri: String? = null
+    ): Boolean {
         val db = this.writableDatabase
         val contentValues = ContentValues().apply {
             put(COLUMN_NAME, name)
@@ -125,11 +148,13 @@ class DatabaseAccount(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
             put(COLUMN_EMAIL, email)
             put(COLUMN_PHONE, phone)
             put(COLUMN_ADDRESS, address)
+            if (avatarUri != null) put(COLUMN_AVATAR, avatarUri)
         }
         val result = db.update(TABLE_USERS, contentValues, "$COLUMN_USERNAME = ?", arrayOf(username))
         db.close()
         return result > 0
     }
+
 
     // Lưu trạng thái đăng nhập vào SharedPreferences
     fun saveLoginSession(username: String) {
@@ -171,14 +196,38 @@ class DatabaseAccount(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
         cursor.close()
         return exists
     }
+
+    fun getAllUserInfor(): List<UserInfo> {
+        val userList = mutableListOf<UserInfo>()
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_USERS", null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val user = UserInfo(
+                    username = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERNAME)),
+                    name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME)),
+                    birthday = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_BIRTHDAY)),
+                    email = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EMAIL)),
+                    phone = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PHONE)),
+                    address = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ADDRESS)),
+                    avatarUri = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_AVATAR)) // Có thể null nếu không có avatar
+                )
+                userList.add(user)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return userList
+    }
+
 }
 
-// Lớp dữ liệu cho thông tin người dùng
 data class UserInfo(
     val username: String,
     val name: String,
     val birthday: String,
     val email: String,
     val phone: String,
-    val address: String
+    val address: String,
+    val avatarUri: String? = null
 )

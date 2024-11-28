@@ -2,27 +2,19 @@ images/Bag_14.jpg;Cái cặp sách;Bag
 images/Bear_29.jpg;Con Gấu;Bear
 images/Book_154.jpg;Quyển sách;Book
 images/Bottle_94.jpg;Chai nước;Bottle
-images/Brown_bear_43.jpg;Con gấu nâu;Brown bear
-images/Bull_34.jpg;Con bò tót;Bull
 images/Butterfly_103.jpg;Con bướm;Butterfly
-images/Camel_19.jpg;Con lạc đà;Camel
-images/Canary_16.jpg;Chim kim tước;Canary
 images/Candy.jpg;Cái kẹo;Candy
 images/Cat_22.jpg;Con mèo;Cat
-images/Caterpillar_81.jpg;Con sâu bướm;Caterpillar
-images/Cattle_42.jpg;Con bò sừng dài;Cattle
 images/Ceiling_light_103.jpg;Đèn trần;Ceiling_light
 images/Centipede_90.jpg;Con rết;Centipede
 images/Chair_1.jpg;Cái ghế;Chair
-images/Cheetah_8.jpg;Con báo hoa mai;Cheetah
 images/Chicken_47.jpg;Con gà;Chicken
 images/Crab_79.jpg;Con cua;Crab
 images/Crocodile_32.jpg;Con cá sấu;Crocodile
 images/Deer_148.jpg;Con nai;Deer
 images/Dog_82.jpg;Con chó;Dog
 images/Duck_98.jpg;Con vịt;Duck
-images/Eagle_49.jpg;Con chim ưng;Eagle
-images/Electric fan_124.jpg;cái quạt trần;Electric fan
+images/Electric fan_124.jpg;cái quạt;Electric_fan
 images/Elephant_95.jpg;Con voi;Elephant
 images/Fish_106.jpg;Con cá;Fish
 images/Fox_3.jpg;Con cáo;Fox
@@ -36,34 +28,20 @@ images/Goose_20.jpg;Con ngỗng;Goose
 images/Hamster_3.jpg;Con chuột Hamter;Hamster
 images/Harbor_seal_2.jpg;Sư tử biển;Harbor_seal
 images/Hedgehog_60.jpg;Con nhím;Hedgehog
-images/Hippopotamus_37.jpg;Con hà mã;Hippopotamus
 images/Horse_63.jpg;Con ngựa;Horse
-images/Jaguar_59.jpg;Báo đốm;Jaguar
-images/Jellyfish_57.jpg;Con sứa;Jellyfish
 images/Kangaroo_57.jpg;Con chuột túi;Kangaroo
-images/Koala_49.jpg;Con gấu túi;Koala
-images/Ladybug_24.jpg;Con bọ rùa;Ladybug
 images/Laptop_3.jpg;Máy tính;Laptop
-images/Leopard_72.jpg;Con báo;Leopard
 images/Lion_12.jpg;Con sư tử;Lion
-images/Lizard_13.jpg;Con thằn lằn;Lizard
-images/Lynx_56.jpg;Con linh miêu;Lynx
-images/Magpie_44.jpg;Chim ác;Magpie
 images/Microwave_14.jpg;Lò vi sóng;Microwave
 images/Monkey_8.jpg;Con khỉ;Monkey
-images/Moths_and_butterflies_18.jpg;Con bướm;Moths_and_butterflies
 images/Mouse_100.jpg;Con chuột;Mouse
 images/Mousepad_63.jpg;Chuột máy tính;Mousepad
-images/Mule_37.jpg;Con lan;Mule
-images/Ostrich_136.jpg;Con đà điểu;Ostrich
-images/Otter_52.jpg;Con rái cá;Otter
 images/Owl_28.jpg;Con cú;Owl
 images/Panda_58.jpg;Con gấu trúc;Panda
 images/Parrot_11.jpg;Con vẹt;Parrot
 images/Pen_12.jpg;Cái bút;Pen
 images/Penguin_98.jpg;Con chim cánh cụt;Penguin
 images/Pig_67.jpg;Con lợn;Pig
-images/Polar_bear_98.jpg;Con gấu trắng;Polar_bear
 images/Rabbit_84.jpg;Con thỏ;Rabbit
 images/Raccoon_94.jpg;Con gấu mèo;Raccoon
 images/Raven_54.jpg;Con quạ;Raven

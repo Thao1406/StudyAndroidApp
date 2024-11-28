@@ -10,6 +10,7 @@ import android.speech.tts.TextToSpeech
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -41,7 +42,11 @@ class QuestionActivity : AppCompatActivity() {
 
         textToSpeech = TextToSpeech(this) { status ->
             if (status == TextToSpeech.SUCCESS) {
-                textToSpeech.language = Locale.US
+                textToSpeech.language = Locale("vi", "VN") // Đặt ngôn ngữ phát âm
+                val questionText = "Hình bạn vừa chọn là thứ gì ? "
+                playQuestion(questionText) // Gọi phát âm sau khi TextToSpeech đã sẵn sàng
+            } else {
+                Toast.makeText(this, "Không thể khởi tạo TextToSpeech!", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -136,6 +141,10 @@ class QuestionActivity : AppCompatActivity() {
         textToSpeech.speak("Sai rồi!", TextToSpeech.QUEUE_FLUSH, null, null)
     }
 
+    private fun playQuestion(name: String){
+        textToSpeech.language = Locale("vi", "VN")
+        textToSpeech.speak(name, TextToSpeech.QUEUE_FLUSH, null, null)
+    }
     override fun onDestroy() {
         super.onDestroy()
         textToSpeech.shutdown()

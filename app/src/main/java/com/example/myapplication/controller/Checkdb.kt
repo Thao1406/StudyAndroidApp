@@ -5,6 +5,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.model.DatabaseItem
 import com.example.myapplication.R
+import com.example.myapplication.model.DatabaseAccount
 
 class Checkdb : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +29,21 @@ class Checkdb : AppCompatActivity() {
             stringBuilder.append("Vietnamese Text: ${image.vietnameseText}\n")
             stringBuilder.append("English Text: ${image.englishText}\n")
         }
-
+//        val database = DatabaseAccount(this)
+//
+//        val users = database.getAllUserInfor()
+//
+//        val stringBuilder = StringBuilder()
+//        users.forEach { user ->
+//            stringBuilder.append("Username: ${user.username}\n")
+//            stringBuilder.append("Name: ${user.name}\n")
+//            stringBuilder.append("Birthday: ${user.birthday}\n")
+//            stringBuilder.append("Email: ${user.email}\n")
+//            stringBuilder.append("Phone: ${user.phone}\n")
+//            stringBuilder.append("Address: ${user.address}\n")
+//            stringBuilder.append("Avatar URI: ${user.avatarUri ?: "No Avatar"}\n")
+//            stringBuilder.append("\n")
+//        }
         textView.text = stringBuilder.toString()
     }
 }
