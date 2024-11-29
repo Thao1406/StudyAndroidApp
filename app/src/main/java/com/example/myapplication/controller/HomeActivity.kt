@@ -113,6 +113,7 @@ class HomeActivity : AppCompatActivity() {
 
         val btnLogout = popupView.findViewById<Button>(R.id.btn_logout)
         val btnInfo = popupView.findViewById<Button>(R.id.btn_info)
+        val btnQuestion = popupView.findViewById<Button>(R.id.btn_question)
 
         btnLogout.setOnClickListener {
             Toast.makeText(this, "Đăng xuất", Toast.LENGTH_SHORT).show()
@@ -124,6 +125,11 @@ class HomeActivity : AppCompatActivity() {
             Toast.makeText(this, "Thông tin ứng dụng", Toast.LENGTH_SHORT).show()
             popupWindow.dismiss()
             openAppInfo()
+        }
+
+        btnQuestion.setOnClickListener{
+            popupWindow.dismiss()
+            openCategory()
         }
 
         // Lấy tọa độ của anchor
@@ -143,7 +149,7 @@ class HomeActivity : AppCompatActivity() {
 
             // Tính toán tọa độ X và Y
             val x = screenWidth - popupWidth - 20 // Căn sát lề phải, thêm padding 20dp nếu cần
-            val y = location[1] - popupHeight // Hiển thị ngay phía trên anchor
+            val y = location[1] - popupHeight - 10// Hiển thị ngay phía trên anchor
 
             // Hiển thị PopupWindow tại vị trí tính toán
             popupWindow.showAtLocation(anchor, Gravity.NO_GRAVITY, x, y)
@@ -166,6 +172,10 @@ class HomeActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    private fun openCategory(){
+        val intent = Intent(this, CategoryActivity::class.java)
+        startActivity(intent)
+    }
 
     private fun updateUI(gridLayout: androidx.gridlayout.widget.GridLayout) {
         val dbHelper = DatabaseItem(this)
@@ -282,18 +292,18 @@ class HomeActivity : AppCompatActivity() {
     }
 
 
-    // Lưu Bitmap thành tệp tạm và trả về URI
-    private fun saveBitmapToFile(bitmap: Bitmap): Uri {
-        val file = File(cacheDir, "photo_${System.currentTimeMillis()}.jpg")
-        try {
-            val outputStream = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-            outputStream.flush()
-            outputStream.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return Uri.fromFile(file)
-    }
+//    // Lưu Bitmap thành tệp tạm và trả về URI
+//    private fun saveBitmapToFile(bitmap: Bitmap): Uri {
+//        val file = File(cacheDir, "photo_${System.currentTimeMillis()}.jpg")
+//        try {
+//            val outputStream = FileOutputStream(file)
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+//            outputStream.flush()
+//            outputStream.close()
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+//        return Uri.fromFile(file)
+//    }
 
 }

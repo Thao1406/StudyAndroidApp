@@ -1,80 +1,82 @@
-images/Bag_14.jpg;Cái cặp sách;Bag
-images/Bear_29.jpg;Con Gấu;Bear
-images/Book_154.jpg;Quyển sách;Book
-images/Bottle_94.jpg;Chai nước;Bottle
-images/Butterfly_103.jpg;Con bướm;Butterfly
-images/Candy.jpg;Cái kẹo;Candy
-images/Cat_22.jpg;Con mèo;Cat
-images/Ceiling_light_103.jpg;Đèn trần;Ceiling_light
-images/Centipede_90.jpg;Con rết;Centipede
-images/Chair_1.jpg;Cái ghế;Chair
-images/Chicken_47.jpg;Con gà;Chicken
-images/Crab_79.jpg;Con cua;Crab
-images/Crocodile_32.jpg;Con cá sấu;Crocodile
-images/Deer_148.jpg;Con nai;Deer
-images/Dog_82.jpg;Con chó;Dog
-images/Duck_98.jpg;Con vịt;Duck
-images/Electric fan_124.jpg;cái quạt;Electric_fan
-images/Elephant_95.jpg;Con voi;Elephant
-images/Fish_106.jpg;Con cá;Fish
-images/Fox_3.jpg;Con cáo;Fox
-images/Fridge_16.jpg;Cái tủ lạnh;Fridge
-images/Frog_93.jpg;Con ếch;Frog
-images/Giraffe_5.jpg;Con hươu cao cổ;Giraffe
-images/Glass_2.jpg;Cái cốc nước;Glass
-images/Goat_54.jpg;Con dê;Goat
-images/Goldfish_128.jpg;Con cá vàng;Goldfish
-images/Goose_20.jpg;Con ngỗng;Goose
-images/Hamster_3.jpg;Con chuột Hamter;Hamster
-images/Harbor_seal_2.jpg;Sư tử biển;Harbor_seal
-images/Hedgehog_60.jpg;Con nhím;Hedgehog
-images/Horse_63.jpg;Con ngựa;Horse
-images/Kangaroo_57.jpg;Con chuột túi;Kangaroo
-images/Laptop_3.jpg;Máy tính;Laptop
-images/Lion_12.jpg;Con sư tử;Lion
-images/Microwave_14.jpg;Lò vi sóng;Microwave
-images/Monkey_8.jpg;Con khỉ;Monkey
-images/Mouse_100.jpg;Con chuột;Mouse
-images/Mousepad_63.jpg;Chuột máy tính;Mousepad
-images/Owl_28.jpg;Con cú;Owl
-images/Panda_58.jpg;Con gấu trúc;Panda
-images/Parrot_11.jpg;Con vẹt;Parrot
-images/Pen_12.jpg;Cái bút;Pen
-images/Penguin_98.jpg;Con chim cánh cụt;Penguin
-images/Pig_67.jpg;Con lợn;Pig
-images/Rabbit_84.jpg;Con thỏ;Rabbit
-images/Raccoon_94.jpg;Con gấu mèo;Raccoon
-images/Raven_54.jpg;Con quạ;Raven
-images/Red_panda_28.jpg;Con gấu đỏ;Red_panda
-images/Rhinoceros_47.jpg;Con tê giác;Rhinoceros
-images/Ruler_18.jpg;Cái thước;Ruler
-images/Scorpion_69.jpg;Con bọ cạp;Scorpion
-images/Sea_lion_84.jpg;Con sư tử biển;Sea_lion
-images/Sea_turtle_19.jpg;Con rùa biển;Sea_turtle
-images/Seahorse_4.jpg;Con cá ngựa;Seahorse
-images/Shark_71.jpg;Con cá mập;Shark
-images/Sheep_46.jpg;Con cừu;Sheep
-images/Shirt_4.jpg;Cái áo;Shirt
-images/Shrimp_8.jpg;Con tôm;Shrimp
-images/Smartphone_76.jpg;Điện thoại di động;Smartphone
-images/Snail_12.jpg;Con ốc;Snail
-images/Snake_93.jpg;Con rắn;Snake
-images/Sparrow_48.jpg;Con chim sẻ;Sparrow
-images/Spider_2.jpg;Con nhện;Spider
-images/Squid_9.jpg;Con mực;Squid
-images/Squirrel_1.jpg;Con sóc;Squirrel
-images/Starfish_66.jpg;Con sao biển;Starfish
-images/Swan_38.jpg;Con thiên nga;Swan
-images/Table_53.jpg;Cái bàn;Table
-images/Tick_57.jpg;Con bọ;Tick
-images/Tiger_22.jpg;Con hổ;Tiger
-images/Tortoise_94.jpg;Con rùa;Tortoise
-images/Trouser_11.jpg;Cái quần;Trouser
-images/Turkey_44.jpg;Con gà tây;Turkey
-images/Turtle_13.jpg;Con rùa;Turtle
-images/TV_19.jpg;Cái TV;TV
-images/Vase_41.jpg;Lọ hoa;Vase
-images/Whale_73.jpg;Con cá heo;Whale
-images/Woodpecker_7.jpg;Con chim gõ kiến;Woodpecker
-images/Worm_7.jpg;Con giun;Worm
-images/Zebra_8.jpg;Con ngựa vằn;Zebra
+images/Bag_14.jpg;Cái cặp sách;Bag;do_vat
+images/Bear_29.jpg;Con Gấu;Bear;dong_vat
+images/Book_154.jpg;Quyển sách;Book;do_vat
+images/Bottle_94.jpg;Chai nước;Bottle;do_vat
+images/Butterfly_103.jpg;Con bướm;Butterfly;dong_vat
+images/Candy.jpg;Cái kẹo;Candy;do_vat
+images/Cat_22.jpg;Con mèo;Cat;dong_vat
+images/Ceiling_light_103.jpg;Đèn trần;Ceiling_light;do_vat
+images/Centipede_90.jpg;Con rết;Centipede;dong_vat
+images/Chair_1.jpg;Cái ghế;Chair;do_vat
+images/Chicken_47.jpg;Con gà;Chicken;dong_vat
+images/Crab_79.jpg;Con cua;Crab;dong_vat
+images/Crocodile_32.jpg;Con cá sấu;Crocodile;dong_vat
+images/Deer_148.jpg;Con nai;Deer;dong_vat
+images/Dog_82.jpg;Con chó;Dog;dong_vat
+images/Duck_98.jpg;Con vịt;Duck;dong_vat
+images/Electric fan_124.jpg;cái quạt;Electric_fan;do_vat
+images/Elephant_95.jpg;Con voi;Elephant;dong_vat
+images/Fish_106.jpg;Con cá;Fish;dong_vat
+images/Fox_3.jpg;Con cáo;Fox;dong_vat
+images/Fridge_16.jpg;Cái tủ lạnh;Fridge;do_vat
+images/Frog_93.jpg;Con ếch;Frog;dong_vat
+images/Giraffe_5.jpg;Con hươu cao cổ;Giraffe;dong_vat
+images/Glass_2.jpg;Cái cốc nước;Glass;do_vat
+images/Goat_54.jpg;Con dê;Goat;dong_vat
+images/Goldfish_128.jpg;Con cá vàng;Goldfish;dong_vat
+images/Goose_20.jpg;Con ngỗng;Goose;dong_vat
+images/Hamster_3.jpg;Con chuột Hamter;Hamster;dong_vat
+images/Harbor_seal_2.jpg;Sư tử biển;Harbor_seal;dong_vat
+images/Hedgehog_60.jpg;Con nhím;Hedgehog;dong_vat
+images/Horse_63.jpg;Con ngựa;Horse;dong_vat
+images/Kangaroo_57.jpg;Con chuột túi;Kangaroo;dong_vat
+images/Laptop_3.jpg;Máy tính;Laptop;do_vat
+images/Lion_12.jpg;Con sư tử;Lion;dong_vat
+images/Microwave_14.jpg;Lò vi sóng;Microwave;do_vat
+images/Monkey_8.jpg;Con khỉ;Monkey;dong_vat
+images/Mouse_100.jpg;Con chuột;Mouse;dong_vat
+images/Mousepad_63.jpg;Chuột máy tính;Mousepad;do_vat
+images/Owl_28.jpg;Con cú;Owl;dong_vat
+images/Panda_58.jpg;Con gấu trúc;Panda;dong_vat
+images/Parrot_11.jpg;Con vẹt;Parrot;dong_vat
+images/Pen_12.jpg;Cái bút;Pen;do_vat
+images/Penguin_98.jpg;Con chim cánh cụt;Penguin;dong_vat
+images/Pig_67.jpg;Con lợn;Pig;dong_vat
+images/Rabbit_84.jpg;Con thỏ;Rabbit;dong_vat
+images/Raccoon_94.jpg;Con gấu mèo;Raccoon;dong_vat
+images/Raven_54.jpg;Con quạ;Raven;dong_vat
+images/Red_panda_28.jpg;Con gấu đỏ;Red_panda;dong_vat
+images/Rhinoceros_47.jpg;Con tê giác;Rhinoceros;dong_vat
+images/Ruler_18.jpg;Cái thước;Ruler;do_vat
+images/Scorpion_69.jpg;Con bọ cạp;Scorpion;dong_vat
+images/Sea_lion_84.jpg;Con sư tử biển;Sea_lion;dong_vat
+images/Sea_turtle_19.jpg;Con rùa biển;Sea_turtle;dong_vat
+images/Seahorse_4.jpg;Con cá ngựa;Seahorse;dong_vat
+images/Shark_71.jpg;Con cá mập;Shark;dong_vat
+images/Sheep_46.jpg;Con cừu;Sheep;dong_vat
+images/Shirt_4.jpg;Cái áo;Shirt;quan_ao
+images/Shrimp_8.jpg;Con tôm;Shrimp;dong_vat
+images/Smartphone_76.jpg;Điện thoại di động;Smartphone;do_vat
+images/Snail_12.jpg;Con ốc;Snail;dong_vat
+images/Snake_93.jpg;Con rắn;Snake;dong_vat
+images/Sparrow_48.jpg;Con chim sẻ;Sparrow;dong_vat
+images/Spider_2.jpg;Con nhện;Spider;dong_vat
+images/Squid_9.jpg;Con mực;Squid;dong_vat
+images/Squirrel_1.jpg;Con sóc;Squirrel;dong_vat
+images/Starfish_66.jpg;Con sao biển;Starfish;dong_vat
+images/Swan_38.jpg;Con thiên nga;Swan;dong_vat
+images/Table_53.jpg;Cái bàn;Table;do_vat
+images/Tick_57.jpg;Con bọ;Tick;dong_vat
+images/Tiger_22.jpg;Con hổ;Tiger;dong_vat
+images/Tortoise_94.jpg;Con rùa;Tortoise;dong_vat
+images/Trouser_11.jpg;Cái quần;Trouser;quan_ao
+images/Turkey_44.jpg;Con gà tây;Turkey;dong_vat
+images/Turtle_13.jpg;Con rùa;Turtle;dong_vat
+images/TV_19.jpg;Cái TV;TV;do_vat
+images/Vase_41.jpg;Lọ hoa;Vase;do_vat
+images/Whale_73.jpg;Con cá heo;Whale;dong_vat
+images/Woodpecker_7.jpg;Con chim gõ kiến;Woodpecker;dong_vat
+images/Worm_7.jpg;Con giun;Worm;dong_vat
+images/Zebra_8.jpg;Con ngựa vằn;Zebra;dong_vat
+images/Car_148.jpg;Xe hơi;Car;vehicle
+images/Motorbike_297.jpg;Xe máy;Motorbike;vehicle

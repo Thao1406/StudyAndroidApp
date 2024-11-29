@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".controller.ActivityQuestion2">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/anime_tree_illustration_23_2151357572"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
+
+        <TextView
+            android:id="@+id/name_of_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_semi_transparent"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:text="Name of Category"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_bg_blue"
+                android:padding="18dp"
+                android:text="x"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <androidx.gridlayout.widget.GridLayout
+                android:layout_width="400dp"
+                android:layout_height="400dp"
+                android:background="@drawable/background_semi_transparent"
+                android:padding="10dp"
+                app:columnCount="2"
+                app:rowCount="2">
+
+                <ImageButton
+                    android:id="@+id/imageButton1"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:padding="0dp"
+                    app:layout_rowWeight="1"
+                    app:layout_columnWeight="1"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/bag_14" />
+
+                <ImageButton
+                    android:id="@+id/imageButton2"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_rowWeight="1"
+                    android:padding="0dp"
+                    app:layout_columnWeight="1"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/bag_14" />
+
+                <ImageButton
+                    android:id="@+id/imageButton3"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:padding="0dp"
+                    app:layout_rowWeight="1"
+                    app:layout_columnWeight="1"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/bag_14" />
+
+                <ImageButton
+                    android:id="@+id/imageButton4"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:padding="0dp"
+                    app:layout_rowWeight="1"
+                    app:layout_columnWeight="1"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/bag_14" />
+            </androidx.gridlayout.widget.GridLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="vertical">
+        </LinearLayout>
+    </LinearLayout>
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/fireworksAnimation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:clickable="false"
+        android:focusable="false"
+        app:lottie_rawRes="@raw/firework"
+        app:lottie_autoPlay="false"
+        app:lottie_loop="false"
+        android:layout_gravity="center"
+        android:translationZ="10dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
