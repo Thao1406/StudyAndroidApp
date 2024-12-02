@@ -23,6 +23,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:background="#CBB8FBAE"
             android:layout_weight="1">
 
             <androidx.gridlayout.widget.GridLayout
@@ -43,6 +44,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingHorizontal="20dp"
+            android:background="#CBB8FBAE"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:gravity="center">

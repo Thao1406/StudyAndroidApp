@@ -75,6 +75,10 @@ class CameraDetectActivity : AppCompatActivity(), Detector.DetectorListener {
         // Xử lý sự kiện click trên ảnh
         imageView.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
+                if (!::boundingBoxes.isInitialized) {
+                    // Nếu boundingBoxes chưa được khởi tạo, trả về false để ngừng xử lý
+                    return@setOnTouchListener false
+                }
                 val x = event.x / imageView.width
                 val y = event.y / imageView.height
 

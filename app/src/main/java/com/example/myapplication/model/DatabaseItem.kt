@@ -17,7 +17,7 @@ data class ImageRecognition(
 class DatabaseItem(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
-        private const val DATABASE_VERSION = 3 // Tăng version để cập nhật bảng
+        private const val DATABASE_VERSION = 2 // Tăng version để cập nhật bảng
         private const val DATABASE_NAME = "ImageDatabase.db"
         private const val TABLE_IMAGES = "Images"
         private const val COLUMN_ID = "id"
@@ -159,37 +159,6 @@ class DatabaseItem(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
             "$COLUMN_CATEGORY = ?",
             arrayOf(category),
             null, null, null
-        )
-
-        val images = mutableListOf<ImageRecognition>()
-        if (cursor.moveToFirst()) {
-            do {
-                val image = ImageRecognition(
-                    id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)),
-                    imagePath = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE_PATH)),
-                    vietnameseText = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_VIETNAMESE_TEXT)),
-                    englishText = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ENGLISH_TEXT)),
-                    category = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CATEGORY))
-                )
-                images.add(image)
-            } while (cursor.moveToNext())
-        }
-        cursor.close()
-        return images
-    }
-
-    // Truy vấn hình ảnh ngẫu nhiên từ một chủ đề khác
-    fun getRandomImagesFromOtherCategories(excludeCategory: String): List<ImageRecognition> {
-        val db = this.readableDatabase
-        val cursor = db.query(
-            TABLE_IMAGES,  // Tên bảng
-            null,  // Lấy tất cả cột
-            "$COLUMN_CATEGORY != ?",  // Điều kiện loại bỏ category
-            arrayOf(excludeCategory),  // Giá trị của excludeCategory
-            null,  // Không cần GROUP BY
-            null,  // Không cần HAVING
-            "RANDOM()",  // Sắp xếp ngẫu nhiên
-            "3"  // Lấy tối đa 3 bản ghi
         )
 
         val images = mutableListOf<ImageRecognition>()

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Màu nền của nút -->
-    <solid android:color="#EDFFDB8C"/> <!-- Thay đổi mã màu theo nhu cầu của bạn -->
+    <solid android:color="#ED9EF885"/> <!-- Thay đổi mã màu theo nhu cầu của bạn -->
 
     <!-- Bo góc của nút -->
     <corners android:radius="12dp"/> <!-- Tùy chỉnh kích thước bo góc -->

@@ -16,6 +16,7 @@ import android.content.res.AssetManager
 import com.airbnb.lottie.LottieAnimationView
 import android.speech.tts.TextToSpeech
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
 import android.view.View
@@ -29,13 +30,14 @@ class ActivityQuestion2 : AppCompatActivity() {
     private lateinit var correctImage: ImageRecognition
     private lateinit var textToSpeech: TextToSpeech
     private lateinit var fireworksAnimation: LottieAnimationView
+    private lateinit var Wronganimation : LottieAnimationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()  // Cho phép hiển thị chế độ "edge-to-edge"
         setContentView(R.layout.activity_question2)
         fireworksAnimation = findViewById(R.id.fireworksAnimation)
-
+        Wronganimation = findViewById(R.id.Wronganimation)
         // Áp dụng window insets listener để đảm bảo các padding cho hệ thống
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -90,19 +92,10 @@ class ActivityQuestion2 : AppCompatActivity() {
         val imageButton4: ImageButton = findViewById(R.id.imageButton4)
 
         // Lấy ảnh ngẫu nhiên từ các category khác để tạo các đáp án sai
-        val validCategories = listOf("dong_vat", "do_vat", "quan_ao", "vehicle")
-        val otherCategories = validCategories.filter { it != category }
-        val randomImages = mutableListOf<ImageRecognition>()
+        val wrongImages = selectedImages.filter { it != correctImage }.shuffled().take(3)
 
-        // Lấy thêm ảnh từ các chủ đề khác
-        otherCategories.forEach { cat ->
-            val imagesFromCategory = database.getImagesByCategory(cat)
-            randomImages.addAll(imagesFromCategory)
-        }
-
-        // Đảm bảo số lượng ảnh là đủ
         val allImages = mutableListOf(correctImage)
-        allImages.addAll(randomImages.shuffled().take(3))
+        allImages.addAll(wrongImages)
 
         // Xáo trộn đáp án
         val shuffledImages = allImages.shuffled()
@@ -144,18 +137,19 @@ class ActivityQuestion2 : AppCompatActivity() {
         fireworksAnimation.visibility = View.VISIBLE
         fireworksAnimation.playAnimation()
         fireworksAnimation.translationZ = 10f
-
         Handler(Looper.getMainLooper()).postDelayed({
             fireworksAnimation.visibility = View.GONE
-            val intent = Intent(this, CategoryActivity::class.java)
-            startActivity(intent)
-            finish()
-        }, 3000)
+        }, 5000)
         textToSpeech.language = Locale("vi", "VN")
         textToSpeech.speak("Chính xác!", TextToSpeech.QUEUE_FLUSH, null, null)
     }
-
     private fun playWrongSound() {
+        Wronganimation.visibility = View.VISIBLE
+        Wronganimation.playAnimation()
+        Wronganimation.translationZ = 10f
+        Handler(Looper.getMainLooper()).postDelayed({
+            Wronganimation.visibility = View.GONE
+        }, 3000)
         textToSpeech.language = Locale("vi", "VN")
         textToSpeech.speak("Sai rồi!", TextToSpeech.QUEUE_FLUSH, null, null)
     }

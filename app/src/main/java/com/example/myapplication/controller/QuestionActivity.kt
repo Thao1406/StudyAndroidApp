@@ -131,7 +131,7 @@ class QuestionActivity : AppCompatActivity() {
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
             finish()
-        }, 3000)
+        }, 7000)
         textToSpeech.language = Locale("vi", "VN")
         textToSpeech.speak("Chính xác!", TextToSpeech.QUEUE_FLUSH, null, null)
     }

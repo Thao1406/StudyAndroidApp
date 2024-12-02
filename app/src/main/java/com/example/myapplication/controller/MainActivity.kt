@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
         val passwordEditText = findViewById<EditText>(R.id.editTextTextPassword2)
         val loginButton = findViewById<Button>(R.id.button_lgn)
         val registerButton = findViewById<Button>(R.id.button_rgt)
-        val checkdbButton = findViewById<Button>(R.id.database)
+//        val checkdbButton = findViewById<Button>(R.id.database)
 
         loginButton.setOnClickListener {
             val username = usernameEditText.text.toString().trim()
@@ -68,9 +68,9 @@ class MainActivity : ComponentActivity() {
             startActivity(intent)
         }
 
-        checkdbButton.setOnClickListener {
-            val intent = Intent(this, Checkdb::class.java)
-            startActivity(intent)
-        }
+//        checkdbButton.setOnClickListener {
+//            val intent = Intent(this, Checkdb::class.java)
+//            startActivity(intent)
+//        }
     }
 }

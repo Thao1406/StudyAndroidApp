@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@drawable/anime_tree_illustration_23_2151357572"
+        android:background="@drawable/background_with_opacity"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="1dp">
 
@@ -120,6 +120,18 @@
         android:clickable="false"
         android:focusable="false"
         app:lottie_rawRes="@raw/firework"
+        app:lottie_autoPlay="false"
+        app:lottie_loop="false"
+        android:layout_gravity="center"
+        android:translationZ="10dp" />
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/Wronganimation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:clickable="false"
+        android:focusable="false"
+        app:lottie_rawRes="@raw/wrong"
         app:lottie_autoPlay="false"
         app:lottie_loop="false"
         android:layout_gravity="center"
