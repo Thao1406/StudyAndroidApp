@@ -94,8 +94,8 @@ class CameraDetectActivity : AppCompatActivity(), Detector.DetectorListener {
                         boxClickCount[label] = boxClickCount.getOrDefault(label, 0) + 1
                         clickCount++
 
-                        // Kiểm tra nếu đạt 10 click
-                        if (clickCount >= 10) {
+                        // Kiểm tra nếu đạt 5 click
+                        if (clickCount >= 5) {
                             val mostClickedLabel = boxClickCount.maxByOrNull { it.value }?.key
                             val clickedBox = boundingBoxes.firstOrNull { it.clsName == mostClickedLabel }
                             goToQuestionActivity(clickedBox)

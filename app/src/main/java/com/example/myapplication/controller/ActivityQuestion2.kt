@@ -38,6 +38,7 @@ class ActivityQuestion2 : AppCompatActivity() {
         setContentView(R.layout.activity_question2)
         fireworksAnimation = findViewById(R.id.fireworksAnimation)
         Wronganimation = findViewById(R.id.Wronganimation)
+
         // Áp dụng window insets listener để đảm bảo các padding cho hệ thống
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -47,7 +48,7 @@ class ActivityQuestion2 : AppCompatActivity() {
 
         textToSpeech = TextToSpeech(this) { status ->
             if (status == TextToSpeech.SUCCESS) {
-                textToSpeech.language = Locale("vi", "VN") // Đặt ngôn ngữ phát âm
+                textToSpeech.language = Locale("vi", "VN")
                 val questionText = "Hãy chọn ${correctImage.vietnameseText}"
                 playQuestion(questionText)
             } else {
@@ -55,25 +56,22 @@ class ActivityQuestion2 : AppCompatActivity() {
             }
         }
 
-
         // Khởi tạo database
         database = DatabaseItem(this)
 
         // Lấy thông tin category từ Intent
         category = intent.getStringExtra("CATEGORY") ?: "dong_vat" // Mặc định là "dong_vat"
 
-        // Hiển thị category vào TextView với giá trị thay đổi tùy thuộc vào category
+        // Hiển thị category vào TextView
         val categoryTextView: TextView = findViewById(R.id.name_of_category)
-
         val categoryText = when (category) {
             "dong_vat" -> "Câu hỏi về Động Vật"
             "do_vat" -> "Câu hỏi về Đồ vật"
             "vehicle" -> "Câu hỏi về Xe cộ"
             "quan_ao" -> "Câu hỏi về Trang phục"
-            else -> "Câu hỏi về Chưa xác định" // Mặc định nếu không phải các category trên
+            else -> "Câu hỏi về Chưa xác định"
         }
-
-        categoryTextView.text = categoryText // Hiển thị thông báo vào TextView
+        categoryTextView.text = categoryText
 
         // Lấy dữ liệu hình ảnh trong category được chọn
         val selectedImages = database.getImagesByCategory(category)
@@ -139,10 +137,60 @@ class ActivityQuestion2 : AppCompatActivity() {
         fireworksAnimation.translationZ = 10f
         Handler(Looper.getMainLooper()).postDelayed({
             fireworksAnimation.visibility = View.GONE
-        }, 5000)
+            loadNewQuestion() // Gọi hàm để thay đổi câu hỏi sau 2 giây
+        }, 4000)
+
         textToSpeech.language = Locale("vi", "VN")
         textToSpeech.speak("Chính xác!", TextToSpeech.QUEUE_FLUSH, null, null)
     }
+
+    private fun loadNewQuestion() {
+        // Lấy lại danh sách câu hỏi từ database và chọn ngẫu nhiên 1 câu hỏi mới
+        val selectedImages = database.getImagesByCategory(category)
+        correctImage = selectedImages.random()
+
+        // Hiển thị câu hỏi mới lên TextView
+        val textView: TextView = findViewById(R.id.textView8)
+        textView.text = "Hãy chọn: ${correctImage.vietnameseText}"
+
+        // Cập nhật lại các đáp án (ImageButton)
+        val imageButton1: ImageButton = findViewById(R.id.imageButton1)
+        val imageButton2: ImageButton = findViewById(R.id.imageButton2)
+        val imageButton3: ImageButton = findViewById(R.id.imageButton3)
+        val imageButton4: ImageButton = findViewById(R.id.imageButton4)
+
+        val wrongImages = selectedImages.filter { it != correctImage }.shuffled().take(3)
+        val allImages = mutableListOf(correctImage)
+        allImages.addAll(wrongImages)
+        val shuffledImages = allImages.shuffled()
+
+        val imageButtons = listOf(imageButton1, imageButton2, imageButton3, imageButton4)
+        for (i in imageButtons.indices) {
+            val imageButton = imageButtons[i]
+            val image = shuffledImages[i]
+
+            val assetManager: AssetManager = assets
+            try {
+                val inputStream: InputStream = assetManager.open(image.imagePath)
+                val bitmap = BitmapFactory.decodeStream(inputStream)
+                imageButton.setImageBitmap(bitmap)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            // Cập nhật sự kiện click cho các ImageButton
+            imageButton.setOnClickListener {
+                if (image == correctImage) {
+                    Toast.makeText(this, "Đúng rồi!", Toast.LENGTH_SHORT).show()
+                    showFireworks()
+                } else {
+                    playWrongSound()
+                    Toast.makeText(this, "Sai rồi, thử lại!", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
     private fun playWrongSound() {
         Wronganimation.visibility = View.VISIBLE
         Wronganimation.playAnimation()
@@ -154,4 +202,5 @@ class ActivityQuestion2 : AppCompatActivity() {
         textToSpeech.speak("Sai rồi!", TextToSpeech.QUEUE_FLUSH, null, null)
     }
 }
+
 
