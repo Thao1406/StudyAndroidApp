@@ -1,6 +1,5 @@
 package com.example.myapplication.controller
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.TextView
@@ -16,7 +15,6 @@ import android.content.res.AssetManager
 import com.airbnb.lottie.LottieAnimationView
 import android.speech.tts.TextToSpeech
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
 import android.view.View
