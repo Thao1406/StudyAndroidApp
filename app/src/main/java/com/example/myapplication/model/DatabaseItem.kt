@@ -79,7 +79,6 @@ class DatabaseItem(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         db.endTransaction() // Kết thúc giao dịch
     }
 
-
     fun getAllImages(): List<ImageRecognition> {
         val imagesList = mutableListOf<ImageRecognition>()
         val db = this.readableDatabase

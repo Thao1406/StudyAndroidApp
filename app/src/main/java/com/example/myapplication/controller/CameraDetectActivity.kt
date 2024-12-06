@@ -9,8 +9,11 @@ import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.speech.tts.TextToSpeech
 import android.view.MotionEvent
+import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -151,10 +154,12 @@ class CameraDetectActivity : AppCompatActivity(), Detector.DetectorListener {
         // Phát âm thanh tiếng Việt
         textToSpeech.language = Locale("vi", "VN")
         textToSpeech.speak(vietnameseSound, TextToSpeech.QUEUE_FLUSH, null, null)
+        Handler(Looper.getMainLooper()).postDelayed({
+            // Phát âm thanh tiếng Anh sau tiếng Việt
+            textToSpeech.language = Locale.US
+            textToSpeech.speak(englishSound, TextToSpeech.QUEUE_ADD, null, null)
+        }, 2000)
 
-        // Phát âm thanh tiếng Anh sau tiếng Việt
-        textToSpeech.language = Locale.US
-        textToSpeech.speak(englishSound, TextToSpeech.QUEUE_ADD, null, null)
     }
 
     private fun goToQuestionActivity(box: BoundingBox?) {
@@ -186,7 +191,7 @@ class CameraDetectActivity : AppCompatActivity(), Detector.DetectorListener {
     }
 
     override fun onEmptyDetect() {
-        // Thông báo khi không phát hiện vật thể nào
+        // Thông báo khi không phát hiện vật thể nàoqqqw
         runOnUiThread {
             Toast.makeText(this, "Không phát hiện vật thể nào!", Toast.LENGTH_SHORT).show()
         }

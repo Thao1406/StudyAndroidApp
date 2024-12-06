@@ -150,6 +150,9 @@ class ActivityQuestion2 : AppCompatActivity() {
         // Hiển thị câu hỏi mới lên TextView
         val textView: TextView = findViewById(R.id.textView8)
         textView.text = "Hãy chọn: ${correctImage.vietnameseText}"
+        textToSpeech.language = Locale("vi", "VN")
+        val questionText = "Hãy chọn ${correctImage.vietnameseText}"
+        playQuestion(questionText)
 
         // Cập nhật lại các đáp án (ImageButton)
         val imageButton1: ImageButton = findViewById(R.id.imageButton1)

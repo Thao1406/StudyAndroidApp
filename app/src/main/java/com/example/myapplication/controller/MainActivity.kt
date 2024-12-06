@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
             return
         }
 
-        // Xử lý logic đăng nhập như trước
+        // Xử lý logic đăng nhập
         val usernameEditText = findViewById<EditText>(R.id.editTextText3)
         val passwordEditText = findViewById<EditText>(R.id.editTextTextPassword2)
         val loginButton = findViewById<Button>(R.id.button_lgn)

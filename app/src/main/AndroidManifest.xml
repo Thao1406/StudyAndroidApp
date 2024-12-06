@@ -46,9 +46,6 @@
             android:name=".controller.Checkdb"
             android:exported="true" />
         <activity
-            android:name=".controller.AppInformationActivity"
-            android:exported="false" />
-        <activity
             android:name=".controller.ItemActivity"
             android:exported="false" />
         <activity
@@ -78,5 +75,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>
